@@ -31,3 +31,10 @@ paper-fab {
 .content {
   padding: 16px;
 }
+
+@media (min-width: 640px) {
+  .content {
+    margin: 0 auto;
+    max-width: 640px;
+  }
+}
