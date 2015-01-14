@@ -9,6 +9,8 @@
 <link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../../bower_components/font-roboto/roboto.html">
 
+<link rel="import" href="../game-board/game-board.html">
+
 <polymer-element name="game-app" attributes="">
   <template>
     <link rel="stylesheet" href="game-app.css">
@@ -29,27 +31,11 @@
           <paper-shadow class="card" horizontal layout>
             <div flex vertical layout>
               <div>{{room.player1.name}}</div>
-              <div class="board">
-                <template repeat="{{row in room.player1.board}}">
-                  <div class="row">
-                    <template repeat="{{cell in row}}">
-                      <div class="cell"></div>
-                    </template>
-                  </div>
-                </template>
-              </div>
+              <game-board board="{{room.player1.board}}"></game-board>
             </div>
             <div flex vertical layout>
               <div>{{room.player2.name}}</div>
-              <div class="board">
-                <template repeat="{{row in room.player2.board}}">
-                  <div class="row">
-                    <template repeat="{{cell in row}}">
-                      <div class="cell"></div>
-                    </template>
-                  </div>
-                </template>
-              </div>
+              <game-board board="{{room.player2.board}}"></game-board>
             </div>
           </paper-shadow>
         </template>

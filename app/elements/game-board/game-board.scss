@@ -1,0 +1,19 @@
+@import '../../bower_components/material-colors/dist/colors.scss';
+
+:host {
+  display: block;
+}
+
+.board {
+  min-height: 200px;
+  min-width: 200px;
+  .row {
+    .cell {
+      background-color: $md-amber-300;
+      margin: 1px;
+      &:hover {
+        background-color: $md-amber-800;
+      }
+    }
+  }
+}

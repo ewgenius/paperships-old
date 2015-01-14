@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="game-board" attributes="board">
+  <template>
+    <link rel="stylesheet" href="game-board.css">
+
+    <div class="board" vertical layout>
+      <template repeat="{{row in board}}">
+        <div flex class="row" horizontal layout>
+          <template repeat="{{cell in row}}">
+            <div flex class="cell"></div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    (function () {
+
+      Polymer({
+        // define element prototype here
+      });
+
+    })();
+  </script>
+</polymer-element>

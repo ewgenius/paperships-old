@@ -22,31 +22,12 @@ paper-fab {
   padding: 16px;
   margin-bottom: 16px;
   background-color: #fff;
+  game-board {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .content {
   padding: 16px;
-}
-
-.board {
-  margin-top: 8px;
-  .row {
-    width: 220px;
-    float: left;
-    clear: both;
-    .cell {
-      width: 18px;
-      height: 18px;
-      background-color: $md-amber-300;
-      margin: 1px;
-      float: left;
-      &:hover {
-        margin: -1px;
-        width: 22px;
-        height: 22px;
-        border: none;
-        background-color: $md-amber-800;
-      }
-    }
-  }
 }
