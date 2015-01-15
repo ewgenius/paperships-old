@@ -21,9 +21,9 @@ paper-fab {
 .card {
   padding: 16px;
   margin-bottom: 16px;
-  background-color: #fff;
+  background-color: $md-green-300;
   &.busy {
-    background-color: $md-red-200;
+    background-color: $md-red-300;
   }
   game-board {
     width: 200px;
