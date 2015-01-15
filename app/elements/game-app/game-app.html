@@ -2,6 +2,7 @@
 
 <link rel="import" href="../../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
 <link rel="import" href="../../bower_components/core-icons/core-icons.html">
 <link rel="import" href="../../bower_components/core-icons/av-icons.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -28,17 +29,26 @@
 
       <div class="content">
         <template repeat="{{room, id in rooms}}">
-          <paper-shadow class="card" horizontal layout>
+          <paper-shadow class="card {{room.free ? '' : 'busy'}}" horizontal layout>
             <div flex self-center>
               room: {{id}}
             </div>
-            <div flex self-center>
-              <div>{{room.player1.name}}</div>
-            </div>
-            <div flex self-center>
-              <div>{{room.player2.name}}</div>
-            </div>
-            <paper-icon-button icon="av:play-circle-outline"></paper-icon-button>
+            <template if="{{room.player1.connected}}">
+              <div flex self-center>
+                <div>{{room.player1.name}}</div>
+              </div>
+            </template>
+            <template if="{{room.player2.connected}}">
+              <div flex self-center>
+                <div>{{room.player2.name}}</div>
+              </div>
+            </template>
+            <template if="{{room.free}}">
+              <paper-icon-button on-click="{{connectToRoom}}" icon="av:play-circle-outline"></paper-icon-button>
+            </template>
+            <template if="{{!room.free}}">
+              <paper-icon-button icon="visibility"></paper-icon-button>
+            </template>
           </paper-shadow>
         </template>
       </div>
@@ -55,16 +65,34 @@
         dataChange: function () {
         },
 
+        connectToRoom: function (event) {
+          // TODO: make more clear, get model by path seems to be durty
+          var id = event.path[3].templateInstance.model.id;
+          var room = event.path[3].templateInstance.model.room;
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(false);
+          if (room.player1.connected) {
+            // enter as player 2
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player2/connected').set(true);
+          }
+          else {
+            // enter as player 1
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player1/connected').set(true);
+          }
+        },
+
         createRoom: function () {
           var room = {
             player1: {
               name: 'player1',
+              connected: true,
               board: {}
             },
             player2: {
               name: 'player2',
+              connected: false,
               board: {}
-            }
+            },
+            free: true
           };
           for (var x = 1; x <= 10; x++) {
             room.player1.board[x] = [];
