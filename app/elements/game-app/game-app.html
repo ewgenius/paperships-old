@@ -29,30 +29,40 @@
 
       <div class="content">
         <template repeat="{{room, id in rooms}}">
-          <paper-shadow class="card {{room.free ? '' : 'busy'}}" horizontal layout>
+          <paper-shadow class="card {{room.free ? '' : 'busy'}} {{id == roomId ? '' : 'current'}}" horizontal layout>
             <div flex self-center>
               room: {{id}}
             </div>
+
             <template if="{{room.player1.connected}}">
               <div flex self-center>
-                <div>{{room.player1.name}}</div>
+                <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{room.player1.name}}</div>
               </div>
             </template>
+
             <template if="{{room.player2.connected}}">
               <div flex self-center>
-                <div>{{room.player2.name}}</div>
+                <div class="{{(id == roomId && player == 2) ? 'player' : ''}}">{{room.player2.name}}</div>
               </div>
             </template>
+
             <template if="{{!room.free && id == roomId}}">
-              </template>
+              <paper-icon-button on-click="{{leaveRoom}}" icon="arrow-back"></paper-icon-button>
+            </template>
+
             <template if="{{room.free}}">
               <paper-icon-button on-click="{{connectToRoom}}" icon="av:play-circle-outline"></paper-icon-button>
             </template>
+
             <template if="{{!room.free}}">
               <paper-icon-button icon="visibility"></paper-icon-button>
             </template>
           </paper-shadow>
         </template>
+        <div>
+          {{player}}<br>
+          {{roomId}}
+        </div>
       </div>
 
       <paper-fab icon="add" on-click="{{createRoom}}"></paper-fab>
@@ -73,8 +83,8 @@
         },
 
 
-        leaveRoom: function(id) {
-          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player +'/connected').set(false);
+        leaveRoom: function (id) {
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(true);
           this.roomId = null;
         },
@@ -84,9 +94,9 @@
           var id = event.path[3].templateInstance.model.id;
           var room = event.path[3].templateInstance.model.room;
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(false);
-          if(this.roomId) {
+          if (this.roomId) {
             // leave room
-            this.leaveRoom(id);
+            this.leaveRoom(this.roomId);
           }
           this.roomId = id;
           if (room.player1.connected) {

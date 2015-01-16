@@ -24,6 +24,12 @@ paper-fab {
   background-color: $md-green-300;
   &.busy {
     background-color: $md-red-300;
+    &.current {
+      background-color: $md-amber-300;
+      .player {
+        background-color: $md-green-300;
+      }
+    }
   }
   game-board {
     width: 200px;
