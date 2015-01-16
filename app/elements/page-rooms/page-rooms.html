@@ -1,0 +1,143 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../../bower_components/core-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+
+<polymer-element name="page-rooms" attributes="">
+  <template>
+    <link rel="stylesheet" href="page-rooms.css">
+
+    <firebase-element id="base"
+                      on-data-change="{{dataChange}}"
+                      data="{{rooms}}"
+                      location="https://seabattle.firebaseio.com/rooms"
+                      log></firebase-element>
+    <core-header-panel fit>
+      <core-toolbar>
+        <div flex>seabattle</div>
+      </core-toolbar>
+
+      <div class="content">
+        <template repeat="{{room, id in rooms}}">
+          <paper-shadow class="card {{room.free ? '' : 'busy'}} {{id == roomId ? '' : 'current'}}" horizontal layout>
+            <div flex self-center>
+              room: {{id}}
+            </div>
+
+            <template if="{{room.player1.connected}}">
+              <div flex self-center>
+                <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{room.player1.name}}</div>
+              </div>
+            </template>
+
+            <template if="{{room.player2.connected}}">
+              <div flex self-center>
+                <div class="{{(id == roomId && player == 2) ? 'player' : ''}}">{{room.player2.name}}</div>
+              </div>
+            </template>
+
+            <template if="{{!room.free && id == roomId}}">
+              <paper-icon-button on-click="{{leaveRoom}}" icon="arrow-back"></paper-icon-button>
+            </template>
+
+            <template if="{{room.free}}">
+              <paper-icon-button on-click="{{connectToRoom}}" icon="av:play-circle-outline"></paper-icon-button>
+            </template>
+
+            <template if="{{!room.free}}">
+              <paper-icon-button icon="visibility"></paper-icon-button>
+            </template>
+          </paper-shadow>
+        </template>
+        <div>
+          {{player}}<br>
+          {{roomId}}
+        </div>
+      </div>
+
+      <paper-fab icon="add" on-click="{{createRoom}}"></paper-fab>
+    </core-header-panel>
+  </template>
+  <script>
+    (function () {
+      Polymer({
+        dataChange: function () {
+        },
+
+
+        leaveRoom: function (id) {
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(true);
+          this.roomId = null;
+        },
+
+        connectToRoom: function (event) {
+          // TODO: make more clear, get model by path seems to be durty
+          var id = event.path[3].templateInstance.model.id;
+          var room = event.path[3].templateInstance.model.room;
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(false);
+          if (this.roomId) {
+            // leave room
+            this.leaveRoom(this.roomId);
+          }
+          this.roomId = id;
+          if (room.player1.connected) {
+            // enter as player 2
+            this.player = 2;
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player2/connected').set(true);
+          }
+          else {
+            // enter as player 1
+            this.player = 1;
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player1/connected').set(true);
+          }
+        },
+
+        createRoom: function () {
+          var room = {
+            player1: {
+              name: 'player1',
+              connected: true,
+              board: {}
+            },
+            player2: {
+              name: 'player2',
+              connected: false,
+              board: {}
+            },
+            free: true
+          };
+          for (var x = 1; x <= 10; x++) {
+            room.player1.board[x] = [];
+            room.player2.board[x] = [];
+            for (var y = 1; y <= 10; y++) {
+              room.player1.board[x][y] = y;
+              room.player2.board[x][y] = y;
+            }
+          }
+
+          var id = 0;
+          if (this.rooms) {
+            for (var i in this.rooms) {
+              id = Math.max(i, id);
+            }
+            id += 1;
+          }
+
+          this.roomId = id;
+
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + id).set(room);
+        }
+      });
+
+
+    })();
+  </script>
+</polymer-element>

@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+<polymer-element name="page-authorize" attributes="">
+  <template>
+    <link rel="stylesheet" href="page-authorize.css">
+
+    <div class="content" fit horizontal layout center-center>
+      <div vertical layout>
+        <paper-button on-click="{{authorizeGoogle}}" raised>authorize with google</paper-button>
+        <paper-spinner active="{{authorizing}}"></paper-spinner>
+      </div>
+    </div>
+  </template>
+  <script src="../../bower_components/firebase/firebase.js"></script>
+  <script>
+    (function () {
+      Polymer({
+
+        authorizing : false,
+
+        authorizeGoogle: function () {
+          var app = this;
+          app.authorizing = true;
+          var ref = new Firebase("https://seabattle.firebaseio.com");
+          ref.authWithOAuthPopup("google", function (error, authData) {
+            if (error) {
+              console.log("Login Failed!", error);
+            } else {
+              console.log("Authenticated successfully with payload:", authData);
+            }
+            app.authorizing = false;
+          });
+        }
+      });
+    })();
+  </script>
+</polymer-element>
