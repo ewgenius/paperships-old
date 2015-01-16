@@ -5,7 +5,7 @@
 }
 
 core-header-panel {
-  background-color: $md-grey-100;
+  background-color: $md-cyan-100;
 }
 
 core-toolbar {
@@ -22,6 +22,7 @@ paper-fab {
   padding: 16px;
   margin-bottom: 16px;
   background-color: $md-green-300;
+  border-radius: 2px;
   &.busy {
     background-color: $md-red-300;
     &.current {
