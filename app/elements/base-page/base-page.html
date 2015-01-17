@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="base-page" attributes="">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+  <script>
+    (function () {
+      Polymer({
+        navigate: function(e, detail, sender) {
+          e.preventDefault();
+          this.fire('change-route', sender.href);
+        },
+        goBack: function(e) {
+          e.preventDefault();
+          this.fire('change-route-back');
+        }
+      });
+    })();
+  </script>
+</polymer-element>

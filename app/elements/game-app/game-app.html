@@ -32,6 +32,9 @@
         user: null,
 
         ready: function () {
+          this.addEventListener('change-route', function (e) {
+            console.log(e);
+          });
         }
       });
     })();
