@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="game-board.css">
 
     <div class="board" fit vertical layout>
-      <template repeat="{{row in board}}">
+      <template repeat="{{row, i in board}}">
         <div flex class="row" horizontal layout>
-          <template repeat="{{cell in row}}">
-            <div flex class="cell"></div>
+          <template repeat="{{cell, j in row}}">
+            <div flex class="cell" on-click="{{clickCell}}" data-i="{{i}}" data-j="{{j}}">{{cell}}</div>
           </template>
         </div>
       </template>
@@ -18,8 +18,15 @@
     (function () {
 
       Polymer({
-        ready: function() {
+        ready: function () {
 
+        },
+
+        clickCell: function (e, detail, target) {
+          console.log(e, detail, target);
+          var i = target.dataset.i;
+          var j = target.dataset.j;
+          //new Firebase('https://seabattle.firebaseio.com/rooms/' + this.roomId + '/player' + this.player + '/board/' + i + '/' + j).set(0);
         }
       });
 
