@@ -12,15 +12,15 @@
   <template>
     <link rel="stylesheet" href="game-app.css">
 
-    <core-animated-pages id="pages" fit selected="1" transitions="slide-from-right">
+    <core-animated-pages id="pages" fit selected="0" transitions="slide-from-right">
       <section>
         <page-authorize fit slide-from-right user="{{user}}"></page-authorize>
       </section>
       <section>
-        <page-rooms slide-from-right user="{{user}}"></page-rooms>
+        <page-rooms slide-from-right user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-rooms>
       </section>
       <section>
-        <page-game slide-from-right user="{{user}}"></page-game>
+        <page-game slide-from-right user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-game>
       </section>
     </core-animated-pages>
 
@@ -31,6 +31,8 @@
     (function () {
       Polymer({
         user: null,
+        player: null,
+        roomId: null,
 
         ready: function () {
           var app = this;

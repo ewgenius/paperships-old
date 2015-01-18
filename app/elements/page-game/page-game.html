@@ -1,15 +1,31 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../base-page/base-page.html">
+<link rel="import" href="../game-board/game-board.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
 
-<polymer-element name="page-game" attributes="" extends="base-page">
+<polymer-element name="page-game" attributes="user player roomId" extends="base-page">
   <template>
+
+    <firebase-element data="{{room}}"
+                      location="https://seabattle.firebaseio.com/rooms/{{roomId}}"
+                      log></firebase-element>
+
+    <firebase-element data="{{board}}"
+                      location="https://seabattle.firebaseio.com/rooms/{{roomId}}/player{{player}}/board"
+                      log></firebase-element>
+
     <link rel="stylesheet" href="page-game.css">
+    <game-board fit board="{{board}}"></game-board>
   </template>
   <script>
+    var game;
     (function () {
-
       Polymer({
-        // define element prototype here
+        board: null,
+        ready: function () {
+          game = this;
+          //console.log(this.room);
+        }
       });
 
     })();

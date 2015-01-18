@@ -11,7 +11,7 @@
 <link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
 <link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
 
-<polymer-element name="page-rooms" attributes="user" extends="base-page">
+<polymer-element name="page-rooms" attributes="user player roomId" extends="base-page">
   <template>
     <link rel="stylesheet" href="page-rooms.css">
 
@@ -21,46 +21,39 @@
                       log></firebase-element>
     <core-header-panel fit>
       <core-toolbar>
-        <paper-icon-button icon="arrow-back" on-click="{{back}}"></paper-icon-button>
         <div flex>seabattle</div>
       </core-toolbar>
 
       <div class="content">
-        <template repeat="{{room in rooms}}">
-          <paper-shadow class="card" horizontal layout>
-            <!--div flex self-center>
-              room: {{id}}
-            </div>
+        <template if="{{rooms}}">
+          <template repeat="{{id in keys(rooms)}}">
+            <paper-shadow class="card" horizontal layout>
+              <template if="{{rooms[id].player1.connected}}">
+                <div flex self-center>
+                  <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{rooms[id].player1.name}}</div>
+                </div>
+              </template>
 
-            <template if="{{room.player1.connected}}">
-              <div flex self-center>
-                <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{room.player1.name}}</div>
-              </div>
-            </template>
+              <template if="{{room.player2.connected}}">
+                <div flex self-center>
+                  <div class="{{(id == roomId && player == 2) ? 'player' : ''}}">{{rooms[id].player2.name}}</div>
+                </div>
+              </template>
 
-            <template if="{{room.player2.connected}}">
-              <div flex self-center>
-                <div class="{{(id == roomId && player == 2) ? 'player' : ''}}">{{room.player2.name}}</div>
-              </div>
-            </template>
+              <template if="{{!rooms[id].free && id == roomId}}">
+                <paper-icon-button on-click="{{leaveRoom}}" icon="arrow-back"></paper-icon-button>
+              </template>
 
-            <template if="{{!room.free && id == roomId}}">
-              <paper-icon-button on-click="{{leaveRoom}}" icon="arrow-back"></paper-icon-button>
-            </template>
+              <template if="{{rooms[id].free}}">
+                <paper-icon-button on-click="{{connectToRoom}}" icon="av:play-circle-outline"></paper-icon-button>
+              </template>
 
-            <template if="{{room.free}}">
-              <paper-icon-button on-click="{{connectToRoom}}" icon="av:play-circle-outline"></paper-icon-button>
-            </template>
-
-            <template if="{{!room.free}}">
-              <paper-icon-button icon="visibility"></paper-icon-button>
-            </template-->
-          </paper-shadow>
+              <template if="{{!rooms[id].free}}">
+                <paper-icon-button icon="visibility"></paper-icon-button>
+              </template>
+            </paper-shadow>
+          </template>
         </template>
-        <div>
-          {{player}}<br>
-          {{roomId}}
-        </div>
       </div>
 
       <paper-fab icon="add" on-click="{{createRoom}}"></paper-fab>
@@ -73,16 +66,23 @@
           this.user = JSON.parse('{"uid":"google:117982112826525450433","provider":"google","google":{"id":"117982112826525450433","accessToken":"ya29._wD_ptpbKB3qBaKxPEQVDguLwjfuHgEisLEN_XAygW5N_-xP_i3uAG3F5J0x1sMfReKfjXYW8eCjew","displayName":"Евгений Храмков","cachedUserProfile":{"id":"117982112826525450433","name":"Евгений Храмков","given_name":"Евгений","family_name":"Храмков","link":"https://plus.google.com/+ЕвгенийХрамков","picture":"https://lh3.googleusercontent.com/-zHoD7QyK0D4/AAAAAAAAAAI/AAAAAAAAA4s/vO_hpaG7vpE/photo.jpg","gender":"male","locale":"ru"}},"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2IjowLCJkIjp7InVpZCI6Imdvb2dsZToxMTc5ODIxMTI4MjY1MjU0NTA0MzMiLCJwcm92aWRlciI6Imdvb2dsZSJ9LCJpYXQiOjE0MjE1NzA5OTB9.AZhDmCGxYcdaPnahU2h3PbNrU0LZdFDV-ApBBIUpnV0","auth":{"uid":"google:117982112826525450433","provider":"google"},"expires":1421657390}');
         },
 
+        keys: function (input) {
+          return Object.keys(input);
+        },
+
         leaveRoom: function (id) {
-          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
-          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(true);
-          this.roomId = null;
+          if (this.player) {
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
+            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(true);
+            this.roomId = null;
+          }
         },
 
         connectToRoom: function (event) {
+          var app = this;
           // TODO: make more clear, get model by path seems to be durty
           var id = event.path[3].templateInstance.model.id;
-          var room = event.path[3].templateInstance.model.room;
+          var room = app.rooms[id];
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(false);
           if (this.roomId) {
             // leave room
@@ -99,6 +99,7 @@
             this.player = 1;
             new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player1/connected').set(true);
           }
+          app.fire('change-route', 'game');
         },
 
         createRoom: function () {
@@ -117,6 +118,7 @@
               connected: false,
               board: {}
             },
+            turn: 0,
             free: true
           };
           for (var x = 1; x <= 10; x++) {
@@ -129,16 +131,14 @@
           }
 
           var id = app.user.uid;
-          //if (this.rooms) {
-          //  for (var i in this.rooms) {
-          //    id = Math.max(i, id);
-          //  }
-          //  id += 1;
-          //}
-
           this.roomId = id;
 
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id).set(room);
+
+          this.roomId = id;
+          this.player = 1;
+
+          app.fire('change-route', 'game');
         }
       });
     })();
