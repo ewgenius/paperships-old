@@ -30,7 +30,8 @@
               console.log("Login Failed!", error);
             } else {
               console.log("Authenticated successfully with payload:", authData);
-              app.fire('change-route');
+              //new Firebase("https://seabattle.firebaseio.com").set(authData);
+              app.fire('change-route', 'rooms');
             }
             app.authorizing = false;
           });
