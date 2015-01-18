@@ -1,5 +1,23 @@
+@import '../../bower_components/material-colors/dist/colors.scss';
+
 :host {
   display: block;
+  background-color: $md-cyan-100;
+}
+
+.login {
+  padding: 16px;
+  border-radius: 2px;
+  background-color: #fff;
+  .header {
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+  .login-buttons {
+    paper-fab {
+      margin: 8px;
+    }
+  }
 }
 
 paper-button {

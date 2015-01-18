@@ -1,18 +1,25 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../base-page/base-page.html">
 
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/core-icons/core-icons.html"/>
+<link rel="import" href="../../bower_components/core-icons/social-icons.html"/>
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 
 <polymer-element name="page-authorize" attributes="user" extends="base-page">
   <template>
     <link rel="stylesheet" href="page-authorize.css">
 
     <div class="content" fit horizontal layout center-center>
-      <div vertical layout>
-        <paper-button on-click="{{authorizeGoogle}}" raised>authorize with google</paper-button>
-        <paper-spinner active="{{authorizing}}"></paper-spinner>
-      </div>
+      <paper-shadow class="login" vertical layout>
+        <div class="header" self-center>Sing In</div>
+        <div class="login-buttons" horizontal layout around-justified>
+          <paper-fab icon="social:post-gplus" on-click="{{authorizeGoogle}}" mini></paper-fab>
+          <paper-fab icon="social:post-github" disabled on-click="{{authorizeGoogle}}" mini></paper-fab>
+        </div>
+        <paper-spinner active="{{authorizing}}" self-center></paper-spinner>
+      </paper-shadow>
     </div>
   </template>
   <script src="../../bower_components/firebase/firebase.js"></script>
@@ -20,7 +27,7 @@
     (function () {
       Polymer({
 
-        authorizing : false,
+        authorizing: false,
 
         authorizeGoogle: function () {
           var app = this;
