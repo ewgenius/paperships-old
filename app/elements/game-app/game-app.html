@@ -2,6 +2,8 @@
 
 <link rel="import" href="../../bower_components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="../../bower_components/core-animated-pages/transitions/slide-from-right.html">
+<link rel="import" href="../../bower_components/core-animated-pages/transitions/cross-fade.html">
+<link rel="import" href="../../bower_components/core-animated-pages/transitions/hero-transition.html">
 
 <link rel="import" href="../page-authorize/page-authorize.html">
 <link rel="import" href="../page-rooms/page-rooms.html">
@@ -12,15 +14,15 @@
   <template>
     <link rel="stylesheet" href="game-app.css">
 
-    <core-animated-pages id="pages" fit selected="0" transitions="slide-from-right">
+    <core-animated-pages id="pages" fit selected="0" transitions="cross-fade hero-transition">
       <section>
-        <page-authorize fit slide-from-right user="{{user}}"></page-authorize>
+        <page-authorize fit hero user="{{user}}"></page-authorize>
       </section>
       <section>
-        <page-rooms slide-from-right user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-rooms>
+        <page-rooms hero user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-rooms>
       </section>
       <section>
-        <page-game slide-from-right user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-game>
+        <page-game hero hero-id="game" user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-game>
       </section>
     </core-animated-pages>
 

@@ -29,7 +29,7 @@
       <div class="content">
         <template if="{{rooms}}">
           <template repeat="{{id in keys(rooms)}}">
-            <paper-shadow class="card" horizontal layout>
+            <paper-shadow class="card" hero-id="game" horizontal layout>
               <template if="{{rooms[id].player1.connected}}">
                 <div flex self-center>
                   <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{rooms[id].player1.name}}</div>
@@ -58,7 +58,7 @@
         </template>
       </div>
 
-      <paper-fab icon="add" on-click="{{createRoom}}"></paper-fab>
+      <paper-fab icon="add" hero-id="game" on-click="{{createRoom}}" hero></paper-fab>
     </core-header-panel>
   </template>
   <script>
