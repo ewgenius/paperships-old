@@ -1,16 +1,20 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<polymer-element name="game-board" attributes="board">
+<polymer-element name="game-board" attributes="user roomId player board">
   <template>
     <link rel="stylesheet" href="game-board.css">
 
     <div class="board" fit vertical layout>
       <template repeat="{{row, i in board}}">
-        <div flex class="row" horizontal layout>
-          <template repeat="{{cell, j in row}}">
-            <div flex class="cell" on-click="{{clickCell}}" data-i="{{i}}" data-j="{{j}}">{{cell}}</div>
-          </template>
-        </div>
+        <template if="{{i > 0}}">
+          <div flex class="row" horizontal layout>
+            <template repeat="{{cell, j in row}}">
+              <template if="{{j > 0}}">
+                <div flex class="cell" on-click="{{clickCell}}" data-i="{{i}}" data-j="{{j}}">{{i}}-{{j}}:{{cell}}</div>
+              </template>
+            </template>
+          </div>
+        </template>
       </template>
     </div>
   </template>
