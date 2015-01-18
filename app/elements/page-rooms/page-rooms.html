@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../base-page/base-page.html">
 
 <link rel="import" href="../../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
@@ -10,24 +11,24 @@
 <link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
 <link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
 
-<polymer-element name="page-rooms" attributes="">
+<polymer-element name="page-rooms" attributes="user" extends="base-page">
   <template>
     <link rel="stylesheet" href="page-rooms.css">
 
     <firebase-element id="base"
-                      on-data-change="{{dataChange}}"
                       data="{{rooms}}"
                       location="https://seabattle.firebaseio.com/rooms"
                       log></firebase-element>
     <core-header-panel fit>
       <core-toolbar>
+        <paper-icon-button icon="arrow-back" on-click="{{back}}"></paper-icon-button>
         <div flex>seabattle</div>
       </core-toolbar>
 
       <div class="content">
-        <template repeat="{{room, id in rooms}}">
-          <paper-shadow class="card {{room.free ? '' : 'busy'}} {{id == roomId ? '' : 'current'}}" horizontal layout>
-            <div flex self-center>
+        <template repeat="{{room in rooms}}">
+          <paper-shadow class="card" horizontal layout>
+            <!--div flex self-center>
               room: {{id}}
             </div>
 
@@ -53,7 +54,7 @@
 
             <template if="{{!room.free}}">
               <paper-icon-button icon="visibility"></paper-icon-button>
-            </template>
+            </template-->
           </paper-shadow>
         </template>
         <div>
@@ -68,9 +69,9 @@
   <script>
     (function () {
       Polymer({
-        dataChange: function () {
+        ready: function () {
+          this.user = JSON.parse('{"uid":"google:117982112826525450433","provider":"google","google":{"id":"117982112826525450433","accessToken":"ya29._wD_ptpbKB3qBaKxPEQVDguLwjfuHgEisLEN_XAygW5N_-xP_i3uAG3F5J0x1sMfReKfjXYW8eCjew","displayName":"Евгений Храмков","cachedUserProfile":{"id":"117982112826525450433","name":"Евгений Храмков","given_name":"Евгений","family_name":"Храмков","link":"https://plus.google.com/+ЕвгенийХрамков","picture":"https://lh3.googleusercontent.com/-zHoD7QyK0D4/AAAAAAAAAAI/AAAAAAAAA4s/vO_hpaG7vpE/photo.jpg","gender":"male","locale":"ru"}},"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2IjowLCJkIjp7InVpZCI6Imdvb2dsZToxMTc5ODIxMTI4MjY1MjU0NTA0MzMiLCJwcm92aWRlciI6Imdvb2dsZSJ9LCJpYXQiOjE0MjE1NzA5OTB9.AZhDmCGxYcdaPnahU2h3PbNrU0LZdFDV-ApBBIUpnV0","auth":{"uid":"google:117982112826525450433","provider":"google"},"expires":1421657390}');
         },
-
 
         leaveRoom: function (id) {
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
@@ -101,13 +102,17 @@
         },
 
         createRoom: function () {
+          var app = this;
+
           var room = {
             player1: {
-              name: 'player1',
+              id: app.user.uid,
+              name: app.user.google.displayName,
               connected: true,
               board: {}
             },
             player2: {
+              id: null,
               name: 'player2',
               connected: false,
               board: {}
@@ -123,21 +128,19 @@
             }
           }
 
-          var id = 0;
-          if (this.rooms) {
-            for (var i in this.rooms) {
-              id = Math.max(i, id);
-            }
-            id += 1;
-          }
+          var id = app.user.uid;
+          //if (this.rooms) {
+          //  for (var i in this.rooms) {
+          //    id = Math.max(i, id);
+          //  }
+          //  id += 1;
+          //}
 
           this.roomId = id;
 
           new Firebase('https://seabattle.firebaseio.com/rooms/' + id).set(room);
         }
       });
-
-
     })();
   </script>
 </polymer-element>

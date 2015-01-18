@@ -1,9 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../base-page/base-page.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
-<polymer-element name="page-authorize" attributes="">
+<polymer-element name="page-authorize" attributes="user" extends="base-page">
   <template>
     <link rel="stylesheet" href="page-authorize.css">
 
@@ -29,8 +30,7 @@
             if (error) {
               console.log("Login Failed!", error);
             } else {
-              console.log("Authenticated successfully with payload:", authData);
-              //new Firebase("https://seabattle.firebaseio.com").set(authData);
+              app.user = authData;
               app.fire('change-route', 'rooms');
             }
             app.authorizing = false;
