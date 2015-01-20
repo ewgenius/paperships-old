@@ -29,7 +29,7 @@
         },
 
         setCellValue: function (i, j, value) {
-          new Firebase('https://paperships.firebaseio.com/rooms/' + this.roomId + '/player' + this.player + '/board/' + i + '/' + j).set(value);
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + this.roomId + '/player' + this.player + '/board/' + i + '/' + j).set(value);
         },
 
         clearBoard: function () {
