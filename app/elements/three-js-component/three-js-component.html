@@ -1,0 +1,22 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="three-js-component" attributes="width height scene">
+  <template>
+    <link rel="stylesheet" href="three-js-component.css">
+    <canvas id="canvas" width="width" height="height">
+  </template>
+  <script src="../../bower_components/three.js/three.min.js"></script>
+  <script>
+    (function() {
+      Polymer({
+        scene: null,
+        camera: null,
+
+        ready: function() {
+          this.scene = new THREE.Scene();
+          this.camera = new THREE.PerspectiveCamera( 50, 0.5 * this.width / this.height, 1, 10000 );
+        }
+      });
+    })();
+  </script>
+</polymer-element>
