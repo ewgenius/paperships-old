@@ -9,9 +9,33 @@
   min-width: 200px;
   .row {
     .cell {
-      background-color: $md-amber-300;
       margin: 1px;
+      cursor: pointer;
       &:hover {
+        background-color: $md-red-200;
+      }
+      &.cell_1 {
+        background-color: $md-amber-100;
+      }
+      &.cell_2 {
+        background-color: $md-amber-200;
+      }
+      &.cell_3 {
+        background-color: $md-amber-300;
+      }
+      &.cell_4 {
+        background-color: $md-amber-400;
+      }
+      &.cell_5 {
+        background-color: $md-amber-500;
+      }
+      &.cell_6 {
+        background-color: $md-amber-600;
+      }
+      &.cell_7 {
+        background-color: $md-amber-700;
+      }
+      &.cell_8 {
         background-color: $md-amber-800;
       }
     }

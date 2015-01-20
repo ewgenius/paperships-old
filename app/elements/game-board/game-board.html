@@ -11,7 +11,7 @@
           <div flex class="row" horizontal layout>
             <template repeat="{{cell, j in row}}">
               <template if="{{j > 0}}">
-                <div flex class="cell" on-click="{{clickCell}}" data-i="{{i}}" data-j="{{j}}">{{i}}-{{j}}:{{cell}}</div>
+                <div flex class="cell cell_{{cell}}" on-click="{{clickCell}}" data-i="{{i}}" data-j="{{j}}">{{cell}}</div>
               </template>
             </template>
           </div>
@@ -25,14 +25,28 @@
 
       Polymer({
         ready: function () {
+          //this.clearBoard();
+        },
 
+        setCellValue: function (i, j, value) {
+          new Firebase('https://seabattle.firebaseio.com/rooms/' + this.roomId + '/player' + this.player + '/board/' + i + '/' + j).set(value);
+        },
+
+        clearBoard: function () {
+          for (var i = 0; i <= 10; i++) {
+            for (var j = 0; j <= 10; j++) {
+              this.setCellValue(i, j, 0);
+            }
+          }
         },
 
         clickCell: function (e, detail, target) {
-          console.log(e, detail, target);
           var i = target.dataset.i;
           var j = target.dataset.j;
-          //new Firebase('https://seabattle.firebaseio.com/rooms/' + this.roomId + '/player' + this.player + '/board/' + i + '/' + j).set(0);
+          var v = 0;
+          if (this.board[i][j] < 8)
+            v = this.board[i][j] + 1;
+          this.setCellValue(i, j, v);
         }
       });
 
