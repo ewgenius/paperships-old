@@ -35,30 +35,30 @@
   <script src="../../bower_components/director/build/director.js"></script>
   <script>
     var debugApp;
-    (function () {
+    (function() {
       Polymer({
         user: null,
         player: null,
         roomId: null,
 
-        ready: function () {
+        ready: function() {
           var app = this;
           /// TODO: remove
           debugApp = this;
 
           var routes = {
-            'authorize': function () {
+            'authorize': function() {
               app.$.pages.selected = 0;
             },
-            'rooms': function () {
+            'rooms': function() {
               app.$.pages.selected = 1;
             },
-            'game': function () {
+            'game': function() {
               app.$.pages.selected = 2;
             }
           };
 
-          this.addEventListener('change-route', function (e) {
+          this.addEventListener('change-route', function(e) {
             if (e.detail) {
               if (routes[e.detail]) {
                 //window.history.pushState({route: routes[e.detail]}, routes[e.detail]);
@@ -67,7 +67,7 @@
             }
           });
 
-          this.addEventListener('change-route-back', function (e) {
+          this.addEventListener('change-route-back', function(e) {
             window.history.back();
             console.log(window.history.state);
           });
