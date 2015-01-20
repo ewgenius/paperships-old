@@ -5,7 +5,7 @@
 }
 
 core-header-panel {
-  background-color: $md-cyan-100;
+  background-color: $md-grey-100;
 }
 
 core-toolbar {
@@ -24,15 +24,15 @@ paper-fab {
 
 .card {
   padding: 16px;
-  margin-bottom: 16px;
-  background-color: $md-green-300;
+  margin: 0 auto 16px;
+  background-color: #fff;
   border-radius: 2px;
   &.busy {
-    background-color: $md-red-300;
+    //background-color: $md-red-300;
     &.current {
-      background-color: $md-amber-300;
+      //background-color: $md-amber-300;
       .player {
-        background-color: $md-green-300;
+        //background-color: $md-green-300;
       }
     }
   }
@@ -44,4 +44,10 @@ paper-fab {
 
 .content {
   padding: 16px;
+}
+
+@media (min-width: 480px) {
+  .card {
+    max-width: 480px;
+  }
 }

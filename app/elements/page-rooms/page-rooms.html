@@ -29,7 +29,7 @@
       <div class="content">
         <template if="{{rooms}}">
           <template repeat="{{id in keys(rooms)}}">
-            <paper-shadow class="card" hero-id="game" horizontal layout>
+            <paper-shadow class="card" hero-id="game" z="1" horizontal layout>
               <template if="{{rooms[id].player1.connected}}">
                 <div flex self-center>
                   <div class="{{(id == roomId && player == 1) ? 'player' : ''}}">{{rooms[id].player1.name}}</div>
