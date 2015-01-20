@@ -18,7 +18,8 @@
 
     <core-animated-pages id="pages" fit selected="0" transitions="slide-from-bottom">
       <section>
-        <game-board></game-board>
+        <firebase-element id="base" data="{{room}}" location="https://seabattle.firebaseio.com/rooms/google%3A106364248951464061616"></firebase-element>
+        <game-board board={{room.player1.board}} roomId="google%3A106364248951464061616" player="1" user={{testing.player1}}></game-board>
       </section>
       <section>
         <page-authorize fit slide-from-bottom user="{{user}}"></page-authorize>
@@ -40,6 +41,59 @@
         user: null,
         player: null,
         roomId: null,
+
+        testing: {
+          player1: {
+            "uid": "google:117982112826525450433",
+            "provider": "google",
+            "google": {
+              "id": "117982112826525450433",
+              "accessToken": "ya29.AQEBWRV1vPLuLhZVh9z3jHk7yV3NFofqg34-9PoGjMCexaLoaDCERBGPeOpTJ25OJWBPPaGAnBP53w",
+              "displayName": "Евгений Храмков",
+              "cachedUserProfile": {
+                "id": "117982112826525450433",
+                "name": "Евгений Храмков",
+                "given_name": "Евгений",
+                "family_name": "Храмков",
+                "link": "https://plus.google.com/+ЕвгенийХрамков",
+                "picture": "https://lh3.googleusercontent.com/-zHoD7QyK0D4/AAAAAAAAAAI/AAAAAAAAA4s/vO_hpaG7vpE/photo.jpg",
+                "gender": "male",
+                "locale": "ru"
+              }
+            },
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2IjowLCJkIjp7InVpZCI6Imdvb2dsZToxMTc5ODIxMTI4MjY1MjU0NTA0MzMiLCJwcm92aWRlciI6Imdvb2dsZSJ9LCJpYXQiOjE0MjE3ODIyMjJ9.nYQ80Wv_E_Jdvu2SDTekQwYyGw9Qo03YwO8dzx64SiM",
+            "auth": {
+              "uid": "google:117982112826525450433",
+              "provider": "google"
+            },
+            "expires": 1421868622
+          },
+          player2: {
+            "uid": "google:106364248951464061616",
+            "provider": "google",
+            "google": {
+              "id": "106364248951464061616",
+              "accessToken": "ya29.AQHvmVPMMIydb9rQqmKJ-SyGlFx2JBrSZea8xr3twY_FQ6T5l6mkwGXmoDt68w94O61AKpjw-0Lgyw",
+              "displayName": "Ebuarbo Brunovich",
+              "cachedUserProfile": {
+                "id": "106364248951464061616",
+                "name": "Ebuarbo Brunovich",
+                "given_name": "Ebuarbo",
+                "family_name": "Brunovich",
+                "link": "https://plus.google.com/106364248951464061616",
+                "picture": "https://lh5.googleusercontent.com/-Be2o-J-jvWc/AAAAAAAAAAI/AAAAAAAAAA8/38uXha7FB1I/photo.jpg",
+                "gender": "male",
+                "locale": "ru"
+              }
+            },
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ2IjowLCJkIjp7InVpZCI6Imdvb2dsZToxMDYzNjQyNDg5NTE0NjQwNjE2MTYiLCJwcm92aWRlciI6Imdvb2dsZSJ9LCJpYXQiOjE0MjE3ODIzNDR9.MnupRhFgHhJ2Gwp5HKwBajctExpjRbdnLqn1WEE5YkI",
+            "auth": {
+              "uid": "google:106364248951464061616",
+              "provider": "google"
+            },
+            "expires": 1421868744
+          }
+        },
 
         ready: function() {
           var app = this;
