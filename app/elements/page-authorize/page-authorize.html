@@ -32,7 +32,7 @@
         authorizeGoogle: function () {
           var app = this;
           app.authorizing = true;
-          var ref = new Firebase("https://seabattle.firebaseio.com");
+          var ref = new Firebase("https://paperships.firebaseio.com");
           ref.authWithOAuthPopup("google", function (error, authData) {
             if (error) {
               console.log("Login Failed!", error);

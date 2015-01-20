@@ -18,11 +18,11 @@
 
     <firebase-element id="base"
                       data="{{rooms}}"
-                      location="https://seabattle.firebaseio.com/rooms"
+                      location="https://paperships.firebaseio.com/rooms"
                       log></firebase-element>
     <core-header-panel fit>
       <core-toolbar>
-        <div flex>seabattle</div>
+        <div flex>paperships</div>
         <core-image class="avatar" width="56" height="56" src="{{user.google.cachedUserProfile.picture}}" sizing="cover"></core-image>
       </core-toolbar>
 
@@ -74,8 +74,8 @@
 
         leaveRoom: function (id) {
           if (this.player) {
-            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
-            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(true);
+            new Firebase('https://paperships.firebaseio.com/rooms/' + id + '/player' + this.player + '/connected').set(false);
+            new Firebase('https://paperships.firebaseio.com/rooms/' + id + '/free').set(true);
             this.roomId = null;
           }
         },
@@ -85,7 +85,7 @@
           // TODO: make more clear, get model by path seems to be durty
           var id = event.path[3].templateInstance.model.id;
           var room = app.rooms[id];
-          new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/free').set(false);
+          new Firebase('https://paperships.firebaseio.com/rooms/' + id + '/free').set(false);
           if (this.roomId) {
             // leave room
             this.leaveRoom(this.roomId);
@@ -94,12 +94,12 @@
           if (room.player1.connected) {
             // enter as player 2
             this.player = 2;
-            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player2/connected').set(true);
+            new Firebase('https://paperships.firebaseio.com/rooms/' + id + '/player2/connected').set(true);
           }
           else {
             // enter as player 1
             this.player = 1;
-            new Firebase('https://seabattle.firebaseio.com/rooms/' + id + '/player1/connected').set(true);
+            new Firebase('https://paperships.firebaseio.com/rooms/' + id + '/player1/connected').set(true);
           }
           app.fire('change-route', 'game');
         },
@@ -135,7 +135,7 @@
           var id = app.user.uid;
           this.roomId = id;
 
-          new Firebase('https://seabattle.firebaseio.com/rooms/' + id).set(room);
+          new Firebase('https://paperships.firebaseio.com/rooms/' + id).set(room);
 
           this.roomId = id;
           this.player = 1;
