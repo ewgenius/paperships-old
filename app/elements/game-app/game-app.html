@@ -9,6 +9,7 @@
 <link rel="import" href="../page-authorize/page-authorize.html">
 <link rel="import" href="../page-rooms/page-rooms.html">
 <link rel="import" href="../page-game/page-game.html">
+<link rel="import" href="../game-board/game-board.html">
 
 
 <polymer-element name="game-app" attributes="">
@@ -16,6 +17,9 @@
     <link rel="stylesheet" href="game-app.css">
 
     <core-animated-pages id="pages" fit selected="0" transitions="slide-from-bottom">
+      <section>
+        <game-board></game-board>
+      </section>
       <section>
         <page-authorize fit slide-from-bottom user="{{user}}"></page-authorize>
       </section>
