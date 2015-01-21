@@ -1,11 +1,14 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../three-js-component/three-js-component.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-element.html">
 
-<polymer-element name="game-board" attributes="user roomId player board">
+<polymer-element name="game-board" attributes="user roomId player">
   <template>
     <link rel="stylesheet" href="game-board.css">
 
-    <div class="board" fit vertical layout>
+    <firebase-element id="base" data="{{board}}" location="https://seabattle.firebaseio.com/rooms/{{roomId}}/player{{player}}/board"></firebase-element>
+
+    <div class="board" vertical layout>
       <template repeat="{{row, i in board}}">
         <template if="{{i > 0}}">
           <div flex class="row" horizontal layout>
@@ -25,7 +28,7 @@
 
       Polymer({
         ready: function () {
-          //this.clearBoard();
+          this.clearBoard();
         },
 
         setCellValue: function (i, j, value) {

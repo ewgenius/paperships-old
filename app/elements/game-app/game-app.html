@@ -18,9 +18,16 @@
 
     <core-animated-pages id="pages" fit selected="0" transitions="slide-from-bottom">
       <section>
-        <firebase-element id="base" data="{{room}}" location="https://seabattle.firebaseio.com/rooms/google%3A106364248951464061616"></firebase-element>
-        <game-board board={{room.player1.board}} roomId="google%3A106364248951464061616" player="1" user={{testing.player1}}></game-board>
-
+        <div horizontal layout around-justified>
+          <div flex class="board">
+            <h2>Your's board</h2>
+            <game-board roomId="google%3A106364248951464061616" player="1" user={{testing.player1}}></game-board>
+          </div>
+          <div flex class="board">
+            <h2>Enemy's board</h2>
+            <game-board roomId="google%3A106364248951464061616" player="2" user={{testing.player1}}></game-board>
+          </div>
+        </div>
       </section>
       <section>
         <page-authorize fit slide-from-bottom user="{{user}}"></page-authorize>
@@ -37,7 +44,7 @@
   <script src="../../bower_components/director/build/director.js"></script>
   <script>
     var debugApp;
-    (function() {
+    (function () {
       Polymer({
         user: null,
         player: null,
@@ -96,24 +103,24 @@
           }
         },
 
-        ready: function() {
+        ready: function () {
           var app = this;
           /// TODO: remove
           debugApp = this;
 
           var routes = {
-            'authorize': function() {
+            'authorize': function () {
               app.$.pages.selected = 0;
             },
-            'rooms': function() {
+            'rooms': function () {
               app.$.pages.selected = 1;
             },
-            'game': function() {
+            'game': function () {
               app.$.pages.selected = 2;
             }
           };
 
-          this.addEventListener('change-route', function(e) {
+          this.addEventListener('change-route', function (e) {
             if (e.detail) {
               if (routes[e.detail]) {
                 //window.history.pushState({route: routes[e.detail]}, routes[e.detail]);
@@ -122,7 +129,7 @@
             }
           });
 
-          this.addEventListener('change-route-back', function(e) {
+          this.addEventListener('change-route-back', function (e) {
             window.history.back();
             console.log(window.history.state);
           });
