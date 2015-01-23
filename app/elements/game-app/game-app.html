@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="game-app.css">
 
     <core-animated-pages id="pages" fit selected="0" transitions="slide-from-bottom">
-      <section>
+      <!--section>
         <div horizontal layout around-justified>
           <div flex class="board">
             <h2>Your's board</h2>
@@ -28,7 +28,7 @@
             <game-board roomId="google%3A106364248951464061616" player="2" user={{testing.player1}}></game-board>
           </div>
         </div>
-      </section>
+      </section-->
       <section>
         <page-authorize fit slide-from-bottom user="{{user}}"></page-authorize>
       </section>
@@ -36,7 +36,17 @@
         <page-rooms slide-from-bottom user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-rooms>
       </section>
       <section>
-        <page-game slide-from-bottom hero-id="game" user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-game>
+        <!--page-game slide-from-bottom hero-id="game" user="{{user}}" player="{{player}}" roomId="{{roomId}}"></page-game-->
+        <div horizontal layout around-justified>
+          <div flex class="board">
+            <h2>Your's board</h2>
+            <game-board roomId="google%3A106364248951464061616" player="1" user={{testing.player1}}></game-board>
+          </div>
+          <div flex class="board">
+            <h2>Enemy's board</h2>
+            <game-board roomId="google%3A106364248951464061616" player="2" user={{testing.player1}}></game-board>
+          </div>
+        </div>
       </section>
     </core-animated-pages>
 
